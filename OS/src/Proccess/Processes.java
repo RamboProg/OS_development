@@ -1,5 +1,10 @@
 package Proccess;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -62,6 +67,25 @@ public class Processes {
   public static boolean isString(String y) {
     char x = y.charAt(0);
     if (x >= 65 && x <= 122) return true; else return false;
+  }
+
+  public static void print(String s) {
+    System.out.println(s);
+  }
+
+  public static void readFile(String filePath) throws IOException {
+    String currentLine = "";
+    FileReader fileReader = new FileReader(filePath);
+    BufferedReader br = new BufferedReader(fileReader);
+    while ((currentLine = br.readLine()) != null) print(currentLine);
+    br.close();
+  }
+
+  public static void writeFile(String filePath, String data)
+    throws IOException {
+    FileWriter fileWrite = new FileWriter(filePath);
+    fileWrite.write(data);
+    fileWrite.close();
   }
 
   public static void main(String[] args) {

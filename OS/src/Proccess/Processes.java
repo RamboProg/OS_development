@@ -1,5 +1,9 @@
 package Proccess;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 public class Processes {
@@ -21,11 +25,12 @@ public class Processes {
   private int[] pcbPointers;
   private ArrayList<String> openFiles;
   private String ioInfo;
-  public Object x;
+  public int n=0;
+  public String attr[]= new String[50];
+  public String values[]= new String[50];
+  
 
-  public Processes(){
-
-}
+  
   public Processes(int id,state state,int priority,String accountingInfo,int pc, String[] cpuRegisters,int[]pcbPointers,ArrayList<String>openFiles,String ioInfo){
     this.id=id;
     this.state=state;
@@ -38,34 +43,47 @@ public class Processes {
     this.ioInfo=ioInfo;
     }
 
-  public void assign(Object x, String y){
-      this.x=x;
-      int a;
-      String s;
-      if(!isString(y)){
-        a= Integer.parseInt(y);
-        x=a;
-      }else {
-      s=y;
-      x=s;
-      }
+  public void assign(String x, String y){
+      
+      
+      
+      attr[n]=x;
+      values[n]=y;
+      n++;
       }
       
-
-
-  
-    public static boolean isString(String y){
-      char x=y.charAt(0);
-      if(x>=65 && x<=122)
-        return true;
-    else return false;
+  public  void print(String x){
+    if(n==0){
+      System.out.println("There are no stored values");
+    }
+    else 
+    for(int i =0;i<n;i++){
+      if(attr[i]==x){
+        System.out.println(values[i]);
+      }
     }
 
+  }
+  public static void readFile(String filePath) throws IOException {
+    String currentLine = "";
+    FileReader fileReader = new FileReader(filePath);
+    BufferedReader br = new BufferedReader(fileReader);
+    while ((currentLine = br.readLine()) != null) System.out.println(currentLine);
+    br.close();
+  }
+
+  public static void writeFile(String filePath, String data)
+    throws IOException {
+    FileWriter fileWrite = new FileWriter(filePath);
+    fileWrite.write(data);
+    fileWrite.close();
+  } 
+
+  
+
     public static void main(String []args){
-      Scanner sc= new Scanner(System.in);
       
       
-      System.out.println(isString(sc.nextLine())); 
     }
 
 

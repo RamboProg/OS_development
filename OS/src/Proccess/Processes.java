@@ -28,6 +28,7 @@ public class Processes {
   public int n=0;
   public String attr[]= new String[50];
   public String values[]= new String[50];
+ 
   
 
   
@@ -44,9 +45,6 @@ public class Processes {
     }
 
   public void assign(String x, String y){
-      
-      
-      
       attr[n]=x;
       values[n]=y;
       n++;

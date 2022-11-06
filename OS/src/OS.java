@@ -1,3 +1,4 @@
+import Exception_Handler.RandomEventGenerator;
 import Extras.Memory;
 import Proccess.Processes;
 import java.io.BufferedReader;
@@ -5,10 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import Exception_Handler.RandomEventGenerator;
-
 public class OS {
-
   public Memory memory = new Memory(200);
   private char keys;
   private Disk_Status state = Disk_Status.BUSY;
@@ -16,7 +14,6 @@ public class OS {
   private Processes Proc = new Processes(PID, Processes.state.RUNNING);
   private int readLength = (int) ((Math.random() * (888 - 1) + 1)); // generates the length
 
-  
   public enum Disk_Status {
     BUSY,
     IDLE,
@@ -30,7 +27,6 @@ public class OS {
     DISK_READ_FINISH,
   }
 
-  
   public static void assign(Object x, String y) {
     int a;
 
@@ -98,17 +94,14 @@ public class OS {
     } else if (memory.heapISFull()) {
       memory.insertIntoStack();
     } else memory.insertIntoFree();
-   
-
   }
 
   public void DiskController() {
     System.out.println("DISl was called");
-    state = Disk_Status.BUSY; // changes teh status of the disk form running to idle because it finished
+    state = Disk_Status.IDLE; // changes teh status of the disk form running to idle because it finished
     // reading from the disk
     Enum Operation = generatesOperation(); // generates Operation by calling the method generatesOperation
     int LengthinBits = readLength * 4; // to make it in bits
-   
   }
 
   public enum Operation {
@@ -129,7 +122,7 @@ public class OS {
       case "DIV_ZERO":
         DIV_ZERO();
         break;
-        case "READ_FINISH":
+      case "READ_FINISH":
         DiskController();
         break;
       case "KEY":
@@ -141,10 +134,10 @@ public class OS {
       case "REQ_HEAP":
         ReqHeap();
         break;
-        default : CallsRandomEvents();
+      default:
+        CallsRandomEvents();
     }
   }
-
   //  public static void main(String[] args) {
   //  OS WRZ = new OS();
   //  WRZ.CallsRandomEvents();

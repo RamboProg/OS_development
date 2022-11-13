@@ -1,18 +1,19 @@
 import Exception_Handler.RandomEventGenerator;
 import Extras.Memory;
-import Proccess.Processes;
+import Proccess.ProcS;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class OS {
   public Memory memory = new Memory(200);
   private char keys;
   private Disk_Status state = Disk_Status.BUSY;
   private int PID = (int) (Math.random() * (6000 - 1) + 1);
-  private Processes Proc = new Processes(PID, Processes.state.RUNNING);
   private int readLength = (int) ((Math.random() * (888 - 1) + 1)); // generates the length
+  private ProcS p;
 
   public enum Disk_Status {
     BUSY,
@@ -34,28 +35,32 @@ public class OS {
     if (!isString(y)) {
       a = Integer.parseInt(y);
       x = a;
-    } else s = y;
+    } else
+      s = y;
     x = s;
   }
 
   // Helper method to check if the parametre is string
   public static boolean isString(String y) {
     char x = y.charAt(0);
-    if (x >= 65 && x <= 122) return true; else return false;
+    if (x >= 65 && x <= 122)
+      return true;
+    else
+      return false;
   }
 
   public static void readFile(String filePath) throws IOException {
     String currentLine = "";
     FileReader fileReader = new FileReader(filePath);
     BufferedReader br = new BufferedReader(fileReader);
-    while ((currentLine = br.readLine()) != null) System.out.println(
-      currentLine
-    );
+    while ((currentLine = br.readLine()) != null)
+      System.out.println(
+          currentLine);
     br.close();
   }
 
   public static void writeFile(String filePath, String data)
-    throws IOException {
+      throws IOException {
     FileWriter fileWrite = new FileWriter(filePath);
     fileWrite.write(data);
     fileWrite.close();
@@ -77,23 +82,23 @@ public class OS {
     while (newID == PID) {
       newID = (int) (Math.random() * (6000 - 1) + 1);
     }
-    Proc.setId(newID);
-    Proc.setState(Processes.state.TERMINATED);
+    p.setId(newID);
+    p.setState(ProcS.state.TERMINATED);
 
     System.out.println("An arthmctic error has occured : Division by Zero"); // exception
   }
 
   public void AttemptsPriv() {
     System.out.println(
-      "You cant acces privileged memory. Reallocating a new space in memory"
-    );
+        "You cant acces privileged memory. Reallocating a new space in memory");
     // put the value in the stack or in the heap or in random location but not the
     // priveleged part if yes then look at the following shit
     if (memory.stackISFull()) {
       memory.insertIntoHeap();
     } else if (memory.heapISFull()) {
       memory.insertIntoStack();
-    } else memory.insertIntoFree();
+    } else
+      memory.insertIntoFree();
   }
 
   public void DiskController() {
@@ -111,7 +116,8 @@ public class OS {
 
   public Enum generatesOperation() {
     int rndEvent = (int) (Math.random() * 2) + 1;
-    if (rndEvent == 1) return Operation.READ;
+    if (rndEvent == 1)
+      return Operation.READ;
     return Operation.WRITE;
   }
 
@@ -138,8 +144,38 @@ public class OS {
         CallsRandomEvents();
     }
   }
-  //  public static void main(String[] args) {
-  //  OS WRZ = new OS();
-  //  WRZ.CallsRandomEvents();
-  //   }
+
+  public void create(int id) {
+    ProcS p = new ProcS(PID);
+  }
+
+  public void destroy() {
+    // Destroys a process
+  }
+
+  public String getProcStatus(ProcS p) {
+    int age = p.getAge();
+    String state = p.getState().toString();
+
+    return "The process's age is: " + age + "\n" + "The process's state is: " + state;
+  }
+
+  public void processA() throws IOException {
+    Scanner sc = new Scanner(System.in);
+    String filePath = sc.nextLine();
+    readFile(filePath);
+    sc.close();
+  }
+
+  public void processB() throws IOException {
+    Scanner sc = new Scanner(System.in);
+    String filePath = sc.nextLine();
+    String data = sc.nextLine();
+    writeFile(filePath, data);
+    sc.close();
+  }
+  // public static void main(String[] args) {
+  // OS WRZ = new OS();
+  // WRZ.CallsRandomEvents();
+  // }
 }

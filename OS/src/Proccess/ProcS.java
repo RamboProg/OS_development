@@ -10,6 +10,7 @@ public class ProcS {
   private int priority;
   private int age;
 
+
   public void setId(int id) {
     this.id = id;
   }

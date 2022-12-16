@@ -1,11 +1,19 @@
 import Exception_Handler.RandomEventGenerator;
-import Extras.Memory;
-import Proccess.ProcS;
+import Extras.*;
+import Proccess.*;
+import Semaphores.binary_Semaphore;
+import Semaphores.binary_Semaphore.Value;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Struct;
+import java.util.Queue;
 import java.util.Scanner;
+import java.util.concurrent.Semaphore;
+
+
 
 public class OS {
   public Memory memory = new Memory(200);
@@ -29,25 +37,13 @@ public class OS {
   }
 
   public static void assign(Object x, String y) {
-    int a;
-
-    String s = "";
-    if (!isString(y)) {
-      a = Integer.parseInt(y);
-      x = a;
-    } else
-      s = y;
-    x = s;
+   x=y;
+  }
+  public static void assign(Object x, int y){
+    x=y;
   }
 
-  // Helper method to check if the parametre is string
-  public static boolean isString(String y) {
-    char x = y.charAt(0);
-    if (x >= 65 && x <= 122)
-      return true;
-    else
-      return false;
-  }
+
 
   public static void readFile(String filePath) throws IOException {
     String currentLine = "";
@@ -83,7 +79,7 @@ public class OS {
       newID = (int) (Math.random() * (6000 - 1) + 1);
     }
     p.setId(newID);
-    p.setState(ProcS.state.TERMINATED);
+    p.setState(State.TERMINATED);
 
     System.out.println("An arthmctic error has occured : Division by Zero"); // exception
   }
@@ -174,6 +170,11 @@ public class OS {
     writeFile(filePath, data);
     sc.close();
   }
+  
+  
+
+    
+  
   // public static void main(String[] args) {
   // OS WRZ = new OS();
   // WRZ.CallsRandomEvents();

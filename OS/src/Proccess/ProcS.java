@@ -5,18 +5,11 @@ import java.util.ArrayList;
 public class ProcS {
 
   private int id;
-  private state state;
+  private State state;
   private int priority;
   private int age;
 
-  public enum state {
-    NEW,
-    READY,
-    RUNNING,
-    BLOCKED,
-    TERMINATED,
-    FINISHED,
-  }
+
 
   public void setId(int id) {
     this.id = id;
@@ -26,7 +19,7 @@ public class ProcS {
     return id;
   }
 
-  public ProcS(int id, state state, int priority) {
+  public ProcS(int id, State state, int priority) {
     this.id = id;
     this.state = state;
     this.priority = priority;
@@ -40,7 +33,7 @@ public class ProcS {
     }
   }
 
-  public state getState() {
+  public State getState() {
     return state;
   }
 
@@ -48,7 +41,7 @@ public class ProcS {
     return age;
   }
 
-  public void setState(state state) {
+  public void setState(State state) {
     this.state = state;
   }
 }

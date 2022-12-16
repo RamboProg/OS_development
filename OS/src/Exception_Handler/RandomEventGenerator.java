@@ -1,8 +1,7 @@
 package Exception_Handler;
 
 import Extras.Memory;
-import Proccess.ProcS;
-import Proccess.ProcS.state;
+import Proccess.*;
 
 import java.util.Arrays;
 import java.util.List;

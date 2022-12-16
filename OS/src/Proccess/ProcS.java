@@ -1,6 +1,7 @@
 package Proccess;
 
 import java.util.ArrayList;
+import Proccess.*;
 
 public class ProcS {
 
@@ -8,7 +9,6 @@ public class ProcS {
   private State state;
   private int priority;
   private int age;
-
 
 
   public void setId(int id) {

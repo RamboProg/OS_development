@@ -1,19 +1,20 @@
 import Exception_Handler.RandomEventGenerator;
 import Extras.*;
 import Proccess.*;
-import Semaphores.binary_Semaphore;
-import Semaphores.binary_Semaphore.Value;
+import Semaphores.BinarySemaphore;
+import Semaphores.CountingSemaphores;
+import Semaphores.MutexSemaphores;
+import Semaphores.BinarySemaphore.Value;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Struct;
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 import java.util.concurrent.Semaphore;
-
-
 
 public class OS {
   public Memory memory = new Memory(200);
@@ -22,6 +23,10 @@ public class OS {
   private int PID = (int) (Math.random() * (6000 - 1) + 1);
   private int readLength = (int) ((Math.random() * (888 - 1) + 1)); // generates the length
   private ProcS p;
+  private Queue<ProcS> readyQueue;
+  BinarySemaphore bs = new BinarySemaphore();
+  CountingSemaphores cs = new CountingSemaphores();
+  MutexSemaphores ms = new MutexSemaphores();
 
   public enum Disk_Status {
     BUSY,
@@ -36,30 +41,67 @@ public class OS {
     DISK_READ_FINISH,
   }
 
-  public static void assign(Object x, String y) {
-   x=y;
-  }
-  public static void assign(Object x, int y){
-    x=y;
-  }
-
-
-
-  public static void readFile(String filePath) throws IOException {
-    String currentLine = "";
-    FileReader fileReader = new FileReader(filePath);
-    BufferedReader br = new BufferedReader(fileReader);
-    while ((currentLine = br.readLine()) != null)
-      System.out.println(
-          currentLine);
-    br.close();
+  public void assign(Object x, String y) {
+    ProcS a = new ProcS(0);
+    if (bs.value == Value.ONE) {
+      x = y;
+      bs.semSignalB(bs, a);
+    } else {
+      bs.processQueue.add(a);
+    }
   }
 
-  public static void writeFile(String filePath, String data)
-      throws IOException {
-    FileWriter fileWrite = new FileWriter(filePath);
-    fileWrite.write(data);
-    fileWrite.close();
+  public void assign(Object x, int y) {
+    ProcS a = new ProcS(9);
+    if (bs.value == Value.ONE) {
+      x = y;
+      bs.semSignalB(bs, a);
+    } else {
+      bs.processQueue.add(a);
+    }
+  }
+
+  public void readFile(String filePath) throws IOException {
+    ProcS a = new ProcS(90);
+    if (bs.value == Value.ONE) {
+      bs.semWaitB(bs, a); // sem set to zero
+
+      String currentLine = "";
+      FileReader fileReader = new FileReader(filePath);
+      BufferedReader br = new BufferedReader(fileReader);
+      while ((currentLine = br.readLine()) != null) {
+        print(currentLine);
+        System.out.println(currentLine);
+      }
+      br.close();
+      bs.semSignalB(bs, a);
+    } else {
+      bs.processQueue.add(a);
+    }
+
+  }
+
+  public void writeFile(String filePath, String data) throws IOException {
+    ProcS a = new ProcS(7);
+    if (bs.value == Value.ONE) {
+
+      FileWriter fileWrite = new FileWriter(filePath);
+      fileWrite.write(data);
+      fileWrite.close();
+      bs.semSignalB(bs, a);
+    } else {
+      bs.processQueue.add(a);
+    }
+  }
+
+  public void print(String ahmed) {
+    ProcS a = new ProcS(2);
+    if (bs.value == Value.ONE) {
+
+      System.out.println(ahmed);
+      bs.semSignalB(bs, a);
+    }
+    bs.processQueue.add(a);
   }
 
   public void KeyPress() {
@@ -170,11 +212,7 @@ public class OS {
     writeFile(filePath, data);
     sc.close();
   }
-  
-  
 
-    
-  
   // public static void main(String[] args) {
   // OS WRZ = new OS();
   // WRZ.CallsRandomEvents();

@@ -198,18 +198,28 @@ public class OS {
     return "The process's age is: " + age + "\n" + "The process's state is: " + state;
   }
 
-  public void processA() throws IOException {
+  public void processA() {
     Scanner sc = new Scanner(System.in);
     String filePath = sc.nextLine();
-    readFile(filePath);
+    try {
+      readFile(filePath);
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
     sc.close();
   }
 
-  public void processB() throws IOException {
+  public void processB() {
     Scanner sc = new Scanner(System.in);
     String filePath = sc.nextLine();
     String data = sc.nextLine();
-    writeFile(filePath, data);
+    try {
+      writeFile(filePath, data);
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
     sc.close();
   }
 

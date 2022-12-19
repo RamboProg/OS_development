@@ -99,6 +99,8 @@ public class Scheduling {
     }
 
     public void Scheduler_FCFS() {
-
+        ProcS curr = q.remove();
+        System.out.println("The wait time is: " + curr.getWaitTime());
+        System.out.println("The process age is: " + curr.getAge());
     }
 }

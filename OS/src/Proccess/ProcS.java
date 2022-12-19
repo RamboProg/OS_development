@@ -19,9 +19,9 @@ public class ProcS {
     return id;
   }
 
-  public ProcS(int id, State state, Priority priority, int waitTIme) {
+  public ProcS(int id, Priority priority, int waitTIme) {
     this.id = id;
-    this.state = state;
+    this.state = State.READY;
     this.priority = priority;
     this.waitTIme = waitTIme;
   }

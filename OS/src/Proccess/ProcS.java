@@ -7,9 +7,9 @@ public class ProcS {
 
   private int id;
   private State state;
-  private int priority;
+  private Priority priority;
   private int age;
-
+  private int waitTIme;
 
   public void setId(int id) {
     this.id = id;
@@ -19,10 +19,11 @@ public class ProcS {
     return id;
   }
 
-  public ProcS(int id, State state, int priority) {
+  public ProcS(int id, Priority priority, int waitTIme) {
     this.id = id;
-    this.state = state;
+    this.state = State.READY;
     this.priority = priority;
+    this.waitTIme = waitTIme;
   }
 
   public ProcS(int id) {
@@ -31,6 +32,22 @@ public class ProcS {
     while (this.state == state.TERMINATED || this.state == state.FINISHED) {
       this.age++;
     }
+  }
+
+  @Override
+  public String toString() {
+    return "-----------------------------\n" + "Process has started, Process id: " + this.id + "\n  Wait time is: "
+        + this.waitTIme
+        + "\n The process state is: " + this.state + "\nThe priority of this process is: " + this.priority
+        + "-----------------------------\n";
+  }
+
+  public int getWaitTime() {
+    return this.waitTIme;
+  }
+
+  public void setWaitTIme(int n) {
+    this.waitTIme = n;
   }
 
   public State getState() {
@@ -43,5 +60,13 @@ public class ProcS {
 
   public void setState(State state) {
     this.state = state;
+  }
+
+  public Priority gePriority() {
+    return this.priority;
+  }
+
+  public void setPriority(Priority p) {
+    this.priority = p;
   }
 }

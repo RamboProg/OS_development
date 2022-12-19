@@ -95,7 +95,17 @@ public class Scheduling {
     }
 
     public void Scheduler_MLQS() {
+        while (!qHi.isEmpty()) {
+            qHi.remove().toString();
+        }
 
+        while (!qMed.isEmpty()) {
+            qMed.remove().toString();
+        }
+
+        while (!qLo.isEmpty()) {
+            qLo.remove().toString();
+        }
     }
 
     public void Scheduler_FCFS() {

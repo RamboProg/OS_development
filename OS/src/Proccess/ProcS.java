@@ -34,6 +34,14 @@ public class ProcS {
     }
   }
 
+  @Override
+  public String toString() {
+    return "-----------------------------\n" + "Process has started, Process id: " + this.id + "\n  Wait time is: "
+        + this.waitTIme
+        + "\n The process state is: " + this.state + "\nThe priority of this process is: " + this.priority
+        + "-----------------------------\n";
+  }
+
   public int getWaitTime() {
     return this.waitTIme;
   }

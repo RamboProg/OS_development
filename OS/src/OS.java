@@ -4,7 +4,7 @@ import Proccess.*;
 import Semaphores.BinarySemaphore;
 import Semaphores.CountingSemaphores;
 import Semaphores.MutexSemaphores;
-import Semaphores.BinarySemaphore.Value;
+import Semaphores.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -24,9 +24,10 @@ public class OS {
   private int readLength = (int) ((Math.random() * (888 - 1) + 1)); // generates the length
   private ProcS p;
   private Queue<ProcS> readyQueue;
-  BinarySemaphore bs = new BinarySemaphore();
-  CountingSemaphores cs = new CountingSemaphores();
-  MutexSemaphores ms = new MutexSemaphores();
+  BinarySemaphore bsRead = new BinarySemaphore();
+  CountingSemaphores csWrite = new CountingSemaphores();
+  MutexSemaphores msAssign = new MutexSemaphores();
+  BinarySem2 bs2_Print = new BinarySem2();
 
   public enum Disk_Status {
     BUSY,
@@ -43,28 +44,28 @@ public class OS {
 
   public void assign(Object x, String y) {
     ProcS a = new ProcS(0);
-    if (bs.value == Value.ONE) {
+    if (msAssign.value == Value.ONE) {
       x = y;
-      bs.semSignalB(bs, a);
+      msAssign.semSignalM(msAssign, a);
     } else {
-      bs.processQueue.add(a);
+      msAssign.processQueue.add(a);
     }
   }
 
   public void assign(Object x, int y) {
     ProcS a = new ProcS(9);
-    if (bs.value == Value.ONE) {
+    if (msAssign.value == Value.ONE) {
       x = y;
-      bs.semSignalB(bs, a);
+      msAssign.semSignalM(msAssign, a);
     } else {
-      bs.processQueue.add(a);
+      msAssign.processQueue.add(a);
     }
   }
 
   public void readFile(String filePath) throws IOException {
     ProcS a = new ProcS(90);
-    if (bs.value == Value.ONE) {
-      bs.semWaitB(bs, a); // sem set to zero
+    if (bsRead.value == Value.ONE) {
+      bsRead.semWaitB(bsRead, a); // sem set to zero
 
       String currentLine = "";
       FileReader fileReader = new FileReader(filePath);
@@ -74,34 +75,34 @@ public class OS {
         System.out.println(currentLine);
       }
       br.close();
-      bs.semSignalB(bs, a);
+      bsRead.semSignalB(bsRead, a);
     } else {
-      bs.processQueue.add(a);
+      bsRead.processQueue.add(a);
     }
 
   }
 
   public void writeFile(String filePath, String data) throws IOException {
     ProcS a = new ProcS(7);
-    if (bs.value == Value.ONE) {
+    if (csWrite.count < 80) {
 
       FileWriter fileWrite = new FileWriter(filePath);
       fileWrite.write(data);
       fileWrite.close();
-      bs.semSignalB(bs, a);
+      csWrite.semSignalC(csWrite, a);
     } else {
-      bs.processQueue.add(a);
+      csWrite.processQueue.add(a);
     }
   }
 
   public void print(String ahmed) {
     ProcS a = new ProcS(2);
-    if (bs.value == Value.ONE) {
+    if (bs2_Print.value == Value.ONE) {
 
       System.out.println(ahmed);
-      bs.semSignalB(bs, a);
+      bs2_Print.semSignalB(bs2_Print, a);
     }
-    bs.processQueue.add(a);
+    bs2_Print.processQueue.add(a);
   }
 
   public void KeyPress() {

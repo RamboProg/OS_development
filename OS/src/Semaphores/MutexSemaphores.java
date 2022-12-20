@@ -9,10 +9,6 @@ public class MutexSemaphores {
     // public Queue<ProcS> readyQueue;
     public int ownerID;
 
-    public enum Value {
-        ZERO, ONE
-    }
-
     public MutexSemaphores() {
         this.value = Value.ONE;
         this.processQueue = new LinkedList<ProcS>();
